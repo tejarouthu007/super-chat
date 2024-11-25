@@ -31,11 +31,12 @@ function App() {
   const [user] = useAuthState(auth);
   return (
     <div className="App">
-      <header className="App-header">
+      <header className={`App-header ${user ? 'signed-in' : 'signed-out'}`}>
+        {user && <h1>SuperChat</h1>}
         <SignOut />
       </header>
 
-      <section>
+      <section className={user ? "" : "no-header"}>
         {user? <ChatRoom /> : <SignIn />}
       </section>
     </div>
@@ -64,7 +65,7 @@ function ChatRoom() {
 
 
   const messagesRef = collection(firestore,'messages');
-  const msgquery = query(messagesRef,orderBy('createdAt'),limit(100));
+  const msgquery = query(messagesRef,orderBy('createdAt'),limit(200));
 
   const [messages] = useCollectionData(msgquery, { idField: 'id' });
 
